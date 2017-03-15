@@ -1,6 +1,5 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
-?>
+header('Content-Type: text/html; charset=utf-8');?>
 <script src = 'https://code.jquery.com/jquery-3.1.1.min.js'></script>
 <script type = 'text/javascript'>
 
@@ -20,8 +19,7 @@ window.onload = function(){
 			addImages(data);
 		}
 	});
-	$(window).resize(function() {
-		changeWidth();
+	$(window).resize(function() {		changeWidth();
 	});
 }
 
@@ -42,16 +40,13 @@ function sendFile() {
 			$('#ajaxLoader').hide();
 			$('#forma').show();
 		}
-	});
-}
+	});}
 function addImages(data){
 	for (var i in data){
-		if (!hashTab.hasOwnProperty(data[i].url)){
-			var row = data[i];
+		if (!hashTab.hasOwnProperty(data[i].url)){			var row = data[i];
 			row.obj = createDiv().append(createImage(data[i].url));
 			row.width = row.origWidth * imageHeight / row.origHeight;
-			row.height = imageHeight;
-			urls.push(row);
+			row.height = imageHeight;			urls.push(row);
 			$('body').append(row.obj);//Вначале прорисовываем, чтобы outerWidth схватился
 			hashTab[data[i].url] = 0;
 		}
@@ -77,60 +72,42 @@ function calculateLines(){//Рассчитать сколько строк и с
 	avgWidth = totalWidth/urls.length;//Средний размер элемента, понадобится для последнего элемента
 	return {lines: lines, avgWidth: avgWidth};
 }
-function changeWidth(){//Пересчет размеров контейнеров и рисунков
-	var data = calculateLines();
+function changeWidth(){//Пересчет размеров контейнеров и рисунков	var data = calculateLines();
 	var start = 0;
 	for (var i in data.lines){//Пройдем по каждой строке
 		var bodyWidth = $('body').width();
-		if (i*1+1 == data.lines.length){//Если последняя строка
-			if (bodyWidth - data.lines[i] > avgWidth/2){//Если последнюю строку разумно не выравнивать по правому краю
-				bodyWidth = data.lines[i];
-			}
-		}
-		var space = bodyWidth - data.lines[i];//Пространство, которое надо заполнить или срезать
+		if (i*1+1 == data.lines.length){//Если последняя строка			if (bodyWidth - data.lines[i] > avgWidth/2){//Если последнюю строку разумно не выравнивать по правому краю				bodyWidth = data.lines[i];			}		}		var space = bodyWidth - data.lines[i];//Пространство, которое надо заполнить или срезать
 		var imagesWidth = data.lines[i] - margin*2*i;//Размер рисунков данной строки с вычетом отступов
 		var kImg = Math.max(1, (imagesWidth + space) / imagesWidth);//Во сколько раз надо увеличить рисунок, чтобы заполнить оставшееся пространство, уменьшать нельзя, потому что высота зафиксирована
 		var kDiv = bodyWidth/data.lines[i]; //Во сколько раз модифицировать длину контейнера
 
-		var lineWidth = 0;
-		for (var i2 = start; i2 <= i; i2++){//Пройдем по всем элементам строки и проставим размеры
-			var w = urls[i2].width * kDiv;//Новый размер контейнера
+		var lineWidth = 0;		for (var i2 = start; i2 <= i; i2++){//Пройдем по всем элементам строки и проставим размеры			var w = urls[i2].width * kDiv;//Новый размер контейнера
 			lineWidth += w+2*margin;//Вычислим все новые размеры контейнеров
 			urls[i2].obj.children().height(urls[i2].height * kImg);//Назначаем размер рисунка
-			if (i2 == i){//Правая сторона галереи
-				w += bodyWidth - lineWidth;//Последний DIV растягиваем на пару пикселей до границы окна, рисунок внутри позволяет это сделать
+			if (i2 == i){//Правая сторона галереи				w += bodyWidth - lineWidth - 1;//Последний DIV растягиваем на пару пикселей до границы окна, рисунок внутри позволяет это сделать
 				var h = (urls[i2].height / urls[i2].width) * (bodyWidth - lineWidth);//Определяем на сколько надо поправить правые рисунки, чтобы прямо пиксель в пиксель
 				urls[i2].obj.children().height(Math.max(imageHeight, urls[i2].height * kImg + Math.ceil(h)));//Назначим размер рисунка
 			}
-			urls[i2].obj.width(w);//Назначаем размер контейнера
-		}
-		start = i*1+1;
-	}
-}
-function createImage(src){
-	var obj = $('<img />', {
+			urls[i2].obj.width(w);//Назначаем размер контейнера		}		start = i*1+1;
+	}}
+function createImage(src){	var obj = $('<img />', {
 		src: src,
 		height: imageHeight+'px'
 	});
 	obj.on('load', function(){
 		hashTab[src] = 1;
-		if (isLoaded()) changeWidth();
-	});
-	return obj;
-}
+		if (isLoaded()) changeWidth();	});
+	return obj;}
 function isLoaded(){//Проверим все ли рисунки прорисовались
-	for (var i in hashTab){
-		if (!hashTab.hasOwnProperty(i) && hashTab[i] == 0) return false;
+	for (var i in hashTab){		if (!hashTab.hasOwnProperty(i) && hashTab[i] == 0) return false;
 	}
 
-	return true
-}
+	return true}
 function createDiv(/*width*/){
 	return $('<div />', {
 		class: 'onlyOneClass',
 		height: imageHeight
-	});
-}
+	});}
 
 
 
@@ -139,8 +116,7 @@ function createDiv(/*width*/){
 .onlyOneClass{
 	display: inline-block;
 	margin: 10px;
-	overflow: hidden;
-}
+	overflow: hidden;}
 </style>
 <div>
 <h1>Галерея</h1>
