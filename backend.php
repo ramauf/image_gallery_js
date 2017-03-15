@@ -32,7 +32,7 @@ function returnImages($loadedFiles = array()){
 	$images = array();
 	if ($handle = opendir($dir)) {
 	    while (false !== ($entry = readdir($handle))) {
-	    	if (preg_match('|^[a-z0-9]{32}\.[a-z]{3,4}$|', $entry) && (in_array($entry, $loadedFiles) || empty($loadedFiles))){
+	    	if (preg_match('|^[a-z0-9]{32}\.[a-z]{3,4}$|i', $entry) && (in_array($entry, $loadedFiles) || empty($loadedFiles))){
 	    		$data = resizeImage($dir.$entry);
 		        $images[] = array('url' => '/img/'.$entry, 'origWidth' => $data['width'], 'origHeight' => $data['height']);
 	        }
